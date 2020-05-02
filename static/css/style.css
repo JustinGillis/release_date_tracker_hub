@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    border: 0;
+}
+.container {
+    width: 80%;
+    background-color: blueviolet;
+    height: 5000px;
+    margin: 0 auto;
+}
+.item {
+    border: 1px solid black;
+    border-radius: 5px;
+    display: inline-block;
+    
+}

@@ -1,0 +1,19 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+body {
+    background-color: cadetblue;
+} 
+
+img {
+    width: 50%;
+}
+.article {
+    margin: 20px auto;
+    padding: 10px;
+    background-color: whitesmoke;
+    width: 80%;
+    display: inline-block;
+    box-shadow: 5px 5px black;
+}

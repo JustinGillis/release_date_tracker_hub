@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/news.css') }}">
+    <title>Item View</title>
+</head>
+<body>
+    <h1>News for {{ title }}</h1>
+    <ul>
+        {% for article in articles %}
+            <div class="article">
+                <li>
+                    <img src="{{ article['urlToImage'] }}" alt="">
+                    <p> {{ article['title'] }} </p>
+                    <p> {{ article['author'] }} </p>
+                    <p> {{ article['description'] }} </p>
+                    <a href="{{ article['url'] }}" target="_blank">View Full Article</a>
+                    <p> {{ article['publishedAt'] }} </p>
+                </li>
+            </div>
+            
+        {% endfor %}
+    </ul>
+    
+</body>
+</html>
