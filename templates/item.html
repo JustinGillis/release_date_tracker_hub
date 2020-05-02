@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'layout.html' %}
+
+{% block css %}
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/news.css') }}">
-    <title>Item View</title>
-</head>
-<body>
+    
+{% endblock css %}
+
+{% block content %}
+
     <h1>News for {{ title }}</h1>
+
     <ul>
+
         {% for article in articles %}
+
             <div class="article">
                 <li>
                     <img src="{{ article['urlToImage'] }}" alt="">
@@ -22,7 +26,8 @@
             </div>
             
         {% endfor %}
+
     </ul>
-    
-</body>
-</html>
+
+{% endblock content %}
+

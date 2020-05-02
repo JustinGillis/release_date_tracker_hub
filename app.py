@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, url_for
 from newsapi import NewsApiClient
 import re
 from flask_bcrypt import Bcrypt 
@@ -14,10 +14,11 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///release_date_hub.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-app.secret_key = 'secret key'
+app.secret_key = 'c006e7558c35ca45378686fd800fafa0'
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 bcrypt = Bcrypt(app)
 
@@ -43,7 +44,7 @@ class Item(db.Model):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', title='Register / Sign In')
 
 @app.route('/on_register', methods=['POST'])
 def on_register():
@@ -103,11 +104,10 @@ def on_delete(id):
 @app.route('/dashboard')
 def dashboard():
     items = Item.query.filter_by(author_id=session['userid'])
-    
     if items:
-        return render_template('dashboard.html', items=items)
+        return render_template('dashboard.html', items=items, title='Dashboard')
     else:
-        return render_template('dashboard.html')
+        return render_template('dashboard.html', title='Dashboard')
     # add news article notification logic
 
 @app.route('/item/<title>')
