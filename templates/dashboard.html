@@ -2,26 +2,22 @@
 
 {% block content %}
 
-    <a href="/on_logout">Logout</a>
-
-    <hr>
-
     <form action="/on_add_item" method="post">
         <input type="text" name="name" placeholder="name">
         <input type="date" name="date">
         <button type="submit">Add</button>
     </form>
 
-    <div class="container">
-        {% for item in items %}
-            <div class="item">
+    {% for item in items %}
+        <article class="media content-section">
+            <div class="media-body">
                 <p>{{ item.name }}</p>
                 <p>{{ item.date }}</p>
                 <a href="/item/{{ item.name }}">News</a>
                 <a href="/on_delete/{{ item.id }}">Delete</a>
+                <a href="{{ url_for('edit', id=item.id) }}">Edit</a>
             </div>
-        {% endfor %}
-    </div>
+        </article>
+    {% endfor %}
 
 {% endblock content %}
-    

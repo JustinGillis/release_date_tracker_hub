@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, flash
+from forms import RegistrationForm, LoginForm
 from newsapi import NewsApiClient
-import re
 from flask_bcrypt import Bcrypt 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from flask_migrate import Migrate
+
+import re
 import os
 from pathlib import Path
 from dateutil.parser import parse
@@ -13,12 +15,13 @@ app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///release_date_hub.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+# do i need both secret keys?
+app.config['SECRET_KEY'] = 'c006e7558c35ca45378686fd800fafa0'
+app.secret_key = 'SECRET KEY'
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-app.secret_key = 'c006e7558c35ca45378686fd800fafa0'
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 bcrypt = Bcrypt(app)
 
@@ -43,31 +46,33 @@ class Item(db.Model):
     author = db.relationship('User', foreign_keys=[author_id], backref='user_itemsaa')
 
 @app.route('/')
-def index():
-    return render_template('index.html', title='Register / Sign In')
+def home():
+    return render_template('home.html')
 
-@app.route('/on_register', methods=['POST'])
-def on_register():
-    is_valid = True
-    if is_valid:
-        pw_hash = bcrypt.generate_password_hash(request.form['password'])
-        new_user = User(username=request.form['username'], email=request.form['email'], password=pw_hash)
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        pw_hash = bcrypt.generate_password_hash(form.password.data)
+        new_user = User(username=form.username.data, email=form.email.data, password=pw_hash)
         db.session.add(new_user)
         db.session.commit()
-        user = User.query.filter_by(username=request.form['username']).first()
+        user = User.query.filter_by(username=form.username.data).first()
         session['userid'] = user.id
-        return redirect('/dashboard')
-    else:
-        return redirect('/')
+        flash(f'Account created for {form.username.data}!', 'success')
+        return redirect(url_for('dashboard'))
+    return render_template('register.html', title='Register', form=form)
 
-@app.route('/on_login', methods=['post'])
-def on_login():
-    user = User.query.filter_by(username=request.form['username']).first()
-    if user == None:
-        return redirect('/')
-    elif bcrypt.check_password_hash(user.password, request.form['password']):
-        session['userid'] = user.id
-        return redirect('/dashboard')
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if bcrypt.check_password_hash(user.password, form.password.data):
+            session['userid'] = user.id
+            flash('You have logged in', 'success')
+            return redirect(url_for('dashboard'))
+    return render_template('login.html', title='Log In', form=form)
 
 @app.route('/on_logout')
 def logout():
@@ -130,6 +135,14 @@ def item(title):
     #     print(f"\n{key.ljust(15)} {value}")
 
     return render_template('item.html', articles=articles, title=title)
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/edit/<id>')
+def edit(id):
+    return 'yup'
 
 if __name__ == "__main__":
     app.run(debug=True)
