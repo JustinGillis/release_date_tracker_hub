@@ -3,7 +3,7 @@ from flask import render_template, request, redirect, session, url_for, flash
 from releasedatehub import app, db
 from releasedatehub.forms import RegistrationForm, LoginForm
 from releasedatehub.models import User, Item
-from flask_login import login_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
  
 import re
 from newsapi import NewsApiClient
@@ -40,8 +40,9 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
+            next_page = request.args.get('next')
             flash('You have logged in', 'success')
-            return redirect(url_for('dashboard'))
+            return redirect(next_page) if next_page else redirect(url_for('dashboard'))
         else:
             flash('Login unsucccessful', 'danger')
     return render_template('login.html', title='Log In', form=form)
@@ -53,7 +54,6 @@ def logout():
 
 @app.route('/on_add_item', methods=['POST'])
 def on_add_item():
-    
     if request.form['date']:
         print('date found')
         python_date = parse(request.form['date'])
@@ -61,14 +61,12 @@ def on_add_item():
         db.session.add(item)
         db.session.commit()
         print('finished date found statement')
-
     else:
         print('no date found')
         item = Item(name=request.form['name'], user_id=session['userid'])
         db.session.add(item)
         db.session.commit()
         print('finished no date statement')
-    
     return redirect('/dashboard')
 
 @app.route('/on_delete/<id>', methods=['POST', 'GET'])
@@ -80,7 +78,7 @@ def on_delete(id):
 
 @app.route('/dashboard')
 def dashboard():
-    items = Item.query.filter_by(user_id=session['userid'])
+    items = Item.query.filter_by(user_id=current_user.id)
     if items:
         return render_template('dashboard.html', items=items, title='Dashboard')
     else:
@@ -100,3 +98,8 @@ def about():
 @app.route('/edit/<id>')
 def edit(id):
     return 'yup'
+
+@app.route('/account')
+@login_required
+def account():
+    return render_template('account.html', title='Account')
