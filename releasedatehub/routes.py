@@ -1,49 +1,18 @@
-from flask import Flask, render_template, request, redirect, session, url_for, flash
-from forms import RegistrationForm, LoginForm
-from newsapi import NewsApiClient
-from flask_bcrypt import Bcrypt 
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import func
-from flask_migrate import Migrate
+from flask import render_template, request, redirect, session, url_for, flash
+
+from releasedatehub import app, db
+from releasedatehub.forms import RegistrationForm, LoginForm
+from releasedatehub.models import User, Item
 
 import re
-import os
-from pathlib import Path
+from newsapi import NewsApiClient
+from flask_bcrypt import Bcrypt 
 from dateutil.parser import parse
-
-app = Flask(__name__)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///release_date_hub.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# do i need both secret keys?
-app.config['SECRET_KEY'] = 'c006e7558c35ca45378686fd800fafa0'
-app.secret_key = 'SECRET KEY'
-
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 bcrypt = Bcrypt(app)
-
-# news api ( consider moveing api to another module )
 newsapi = NewsApiClient(api_key='571610756dbb460298a1abbe29199de9')
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(255))
-    email = db.Column(db.String(255))
-    password = db.Column(db.String(255))
-    created_at = db.Column(db.DateTime, server_default=func.now())
-    updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
-
-class Item(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    date = db.Column(db.DateTime)
-    created_at = db.Column(db.DateTime, server_default=func.now())
-    updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
-    author_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='cascade'))
-    author = db.relationship('User', foreign_keys=[author_id], backref='user_itemsaa')
 
 @app.route('/')
 def home():
@@ -85,14 +54,14 @@ def on_add_item():
     if request.form['date']:
         print('date found')
         python_date = parse(request.form['date'])
-        item = Item(name=request.form['name'], date = python_date, author_id = session['userid'])
+        item = Item(name=request.form['name'], date = python_date, user_id = session['userid'])
         db.session.add(item)
         db.session.commit()
         print('finished date found statement')
 
     else:
         print('no date found')
-        item = Item(name=request.form['name'], author_id=session['userid'])
+        item = Item(name=request.form['name'], user_id=session['userid'])
         db.session.add(item)
         db.session.commit()
         print('finished no date statement')
@@ -108,7 +77,7 @@ def on_delete(id):
 
 @app.route('/dashboard')
 def dashboard():
-    items = Item.query.filter_by(author_id=session['userid'])
+    items = Item.query.filter_by(user_id=session['userid'])
     if items:
         return render_template('dashboard.html', items=items, title='Dashboard')
     else:
@@ -143,6 +112,3 @@ def about():
 @app.route('/edit/<id>')
 def edit(id):
     return 'yup'
-
-if __name__ == "__main__":
-    app.run(debug=True)
