@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, session, url_for, flash
 
 from releasedatehub import app, db
-from releasedatehub.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from releasedatehub.forms import RegistrationForm, LoginForm, UpdateAccountForm, ItemForm
 from releasedatehub.models import User, Item
 from flask_login import login_user, logout_user, current_user, login_required
  
@@ -17,6 +17,7 @@ newsapi = NewsApiClient(api_key='571610756dbb460298a1abbe29199de9')
 
 @app.route('/')
 def home():
+    # add homepage content
     return render_template('home.html')
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -52,23 +53,21 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-@app.route('/on_add_item', methods=['POST'])
+@app.route('/item/new', methods=['GET', 'POST'])
 @login_required
-def on_add_item():
-    if request.form['date']:
-        python_date = parse(request.form['date'])
-        item = Item(name=request.form['name'], date = python_date, user_id = current_user.id)
+def new_item():
+    form = ItemForm()
+    if form.validate_on_submit():
+        item = Item(name=form.name.data, date=form.date.data, author=current_user)
         db.session.add(item)
         db.session.commit()
-    else:
-        item = Item(name=request.form['name'], user_id=current_user.id)
-        db.session.add(item)
-        db.session.commit()
-    return redirect('/dashboard')
+        flash('Your item has been added', 'success')
+        return redirect(url_for('dashboard'))
+    return render_template('new_item.html', title='New Item', form=form)
 
-@app.route('/on_delete/<id>', methods=['POST', 'GET'])
+@app.route('/item/delete/<int:id>', methods=['POST', 'GET'])
 @login_required
-def on_delete(id):
+def delete(id):
     item = Item(id=id)
     db.session.remove(item)
     db.session.commit()
@@ -84,21 +83,28 @@ def dashboard():
         return render_template('dashboard.html', title='Dashboard')
     # add news article notification logic
 
-@app.route('/item/<title>')
+@app.route('/item/news/<name>')
 @login_required
-def item(title):
-    news = newsapi.get_everything(q=f'{title} release', language='en')
+def item_news(name):
+    news = newsapi.get_everything(q=f'{name} release', language='en')
     articles = news['articles']
-    return render_template('item.html', articles=articles, title=title)
+    return render_template('item_news.html', articles=articles, title=name)
 
 @app.route('/about')
 def about():
+    # add content
     return render_template('about.html')
 
-@app.route('/edit/<id>')
+@app.route('/item/edit/<int:id>')
 @login_required
 def edit(id):
-    return 'yup'
+    item = Item.query.get_or_404(id)
+    return render_template('edit_item.html', item=item, title='Edit: '+item.name)
+
+@app.route('/item/<int:id>')
+def item(id):
+    item = Item.query.get_or_404(id)
+    return render_template('item.html', item=item, title=item.name)
 
 @app.route('/account', methods=['GET', 'POST'])
 @login_required

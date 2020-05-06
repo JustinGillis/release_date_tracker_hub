@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms.fields.html5 import DateField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional
 from releasedatehub.models import User
 
 class RegistrationForm(FlaskForm):
@@ -43,3 +44,8 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('That email is already taken')
+
+class ItemForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    date = DateField('Date', default=None, validators=[Optional()])
+    submit = SubmitField('Add Item')

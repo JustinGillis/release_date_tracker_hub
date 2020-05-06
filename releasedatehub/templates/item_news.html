@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <h1>News for {{ title }}</h1>
+
+    <ul>
+
+        {% for article in articles %}
+
+            <div class="article">
+                <li>
+                    <img src="{{ article['urlToImage'] }}" alt="">
+                    <p> {{ article['title'] }} </p>
+                    <p> {{ article['author'] }} </p>
+                    <p> {{ article['description'] }} </p>
+                    <a href="{{ article['url'] }}" target="_blank">View Full Article</a>
+                    <p> {{ article['publishedAt'] }} </p>
+                </li>
+            </div>
+            
+        {% endfor %}
+
+    </ul>
+
+{% endblock content %}
+
