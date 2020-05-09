@@ -1,17 +1,41 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <article class="media content-section">
-        <div class="media-body">
-            <p>{{ item.name }}</p>
-            {% if item.date %}
-                <p>{{ item.date.strftime('%Y-%m-%d') }}</p>
-            {% else %}
-                <p>No Date Yet</p>
-            {% endif %}
-            <a href="{{ url_for('item', name=item.name) }}">News</a>
-            <a href="{{ url_for('delete', id=item.id) }}">Delete</a>
-            <a href="{{ url_for('edit', id=item.id) }}">Edit</a>
-        </div>
-    </article>
+    <div class="content-section">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">New Item</legend>
+                <div class="form-group">
+                    {{ form.name.label(class="form-control-label") }}
+                    {% if form.name.errors %}
+                        {{ form.name(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.name(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.date.label(class="form-control-label") }}
+                    {% if form.date.errors %}
+                        {{ form.date(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.date.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.date(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </form>
+    </div>
 {% endblock content %}

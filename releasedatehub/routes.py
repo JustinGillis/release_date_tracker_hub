@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, session, url_for, flash
+from flask import render_template, request, redirect, session, url_for, flash, abort
 
 from releasedatehub import app, db
 from releasedatehub.forms import RegistrationForm, LoginForm, UpdateAccountForm, ItemForm
@@ -19,6 +19,11 @@ newsapi = NewsApiClient(api_key='571610756dbb460298a1abbe29199de9')
 def home():
     # add homepage content
     return render_template('home.html')
+
+@app.route('/about')
+def about():
+    # add content
+    return render_template('about.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -65,6 +70,7 @@ def new_item():
         return redirect(url_for('dashboard'))
     return render_template('new_item.html', title='New Item', form=form)
 
+# fix this route
 @app.route('/item/delete/<int:id>', methods=['POST', 'GET'])
 @login_required
 def delete(id):
@@ -90,18 +96,17 @@ def item_news(name):
     articles = news['articles']
     return render_template('item_news.html', articles=articles, title=name)
 
-@app.route('/about')
-def about():
-    # add content
-    return render_template('about.html')
-
 @app.route('/item/edit/<int:id>')
 @login_required
 def edit(id):
     item = Item.query.get_or_404(id)
+    if item.author != current_user:
+        abort(403)
+        form = ItemForm()
     return render_template('edit_item.html', item=item, title='Edit: '+item.name)
 
 @app.route('/item/<int:id>')
+@login_required
 def item(id):
     item = Item.query.get_or_404(id)
     return render_template('item.html', item=item, title=item.name)

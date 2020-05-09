@@ -9,7 +9,7 @@
             {% else %}
                 <p>No Date Yet</p>
             {% endif %}
-            <a href="{{ url_for('item', name=item.name) }}">News</a>
+            <a href="{{ url_for('item_news', name=item.name) }}">News</a>
             <a href="{{ url_for('delete', id=item.id) }}">Delete</a>
             <a href="{{ url_for('edit', id=item.id) }}">Edit</a>
         </div>
