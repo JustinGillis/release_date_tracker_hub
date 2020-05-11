@@ -102,8 +102,8 @@ def edit(id):
     item = Item.query.get_or_404(id)
     if item.author != current_user:
         abort(403)
-        form = ItemForm()
-    return render_template('edit_item.html', item=item, title='Edit: '+item.name)
+    form = ItemForm()
+    return render_template('new_item.html', item=item, form=form, title='Edit: '+item.name, legend='Edit: '+item.name)
 
 @app.route('/item/<int:id>')
 @login_required
