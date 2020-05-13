@@ -30,7 +30,8 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         pw_hash = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, email=form.email.data, password=pw_hash)
+        new_user = User(username=form.username.data,
+                         email=form.email.data, password=pw_hash)
         db.session.add(new_user)
         db.session.commit()
         user = User.query.filter_by(email=form.email.data).first()
@@ -68,16 +69,45 @@ def new_item():
         db.session.commit()
         flash('Your item has been added', 'success')
         return redirect(url_for('dashboard'))
-    return render_template('new_item.html', title='New Item', form=form)
+    return render_template('new_item.html', title='New Item',
+                             form=form, legend='New Item')
+
+@app.route('/item/<int:id>/update', methods=['GET', 'POST'])
+@login_required
+def update(id):
+    print('in update route')
+    item = Item.query.get_or_404(id)
+    if item.author != current_user:
+        print('aborting...')
+        abort(403)
+    form = ItemForm()
+    if form.validate_on_submit():
+        print('form validated on submit')
+        item.name = form.name.data
+        item.date = form.date.data
+        db.session.commit()
+        print('form commited')
+        flash('Your tracked item has been updated', 'success')
+        print('redirecting')
+        return redirect(url_for('item', id=item.id))
+    elif request.method == 'GET':
+        print('in elif statement for GET')
+        form.name.data = item.name
+        form.date.data = item.date
+    return render_template('new_item.html', item=item, form=form,
+                             title='Update: '+item.name, legend='Update: '+item.name)
 
 # fix this route
-@app.route('/item/delete/<int:id>', methods=['POST', 'GET'])
+@app.route('/item/<int:id>/delete', methods=['POST'])
 @login_required
-def delete(id):
-    item = Item(id=id)
-    db.session.remove(item)
+def delete_item(id):
+    item = Item.query.get_or_404(id)
+    if item.author != current_user:
+        abort(403)
+    db.session.delete(item)
     db.session.commit()
-    return redirect('/dashboard')
+    flash('Your tracked item has been deleted', 'success')
+    return redirect(url_for('dashboard'))
 
 @app.route('/dashboard')
 @login_required
@@ -95,15 +125,6 @@ def item_news(name):
     news = newsapi.get_everything(q=f'{name} release', language='en')
     articles = news['articles']
     return render_template('item_news.html', articles=articles, title=name)
-
-@app.route('/item/edit/<int:id>')
-@login_required
-def edit(id):
-    item = Item.query.get_or_404(id)
-    if item.author != current_user:
-        abort(403)
-    form = ItemForm()
-    return render_template('new_item.html', item=item, form=form, title='Edit: '+item.name, legend='Edit: '+item.name)
 
 @app.route('/item/<int:id>')
 @login_required

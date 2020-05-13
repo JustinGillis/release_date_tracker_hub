@@ -48,4 +48,4 @@ class UpdateAccountForm(FlaskForm):
 class ItemForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     date = DateField('Date', default=None, validators=[Optional()])
-    submit = SubmitField('Add Item')
+    submit = SubmitField('Submit')

@@ -1,17 +1,46 @@
 # Release Date Tracker
 
 ### TODO
-* [ ] edit user page
-* [ ] edit item page
-* [ ] delete items button on dashboard
+
 * [ ] number of news articles for each item on dashboard
-* [ ] format release date on dashboard
-* [ ] add validations (password validations do not work yet) & check on existing user info when registering
-modify register route to log user in and redirect to dashboard
-add 'days left' on item until release date
-email logins not case sensitive
+
+* [ ] add 'days left' on item until release date
+
+* [ ] email login not case sensitive
+
+* [ ] change news to show up in item view and change news button on dashboard to be a notification of the number of news articles
+
+* [ ] 
+
+* [ ] 
+
+* [ ] 
+
+* [ ] 
+
+* [ ] 
+
+* [ ] 
+
+* [ ] 
+
+* [ ] 
 
 
 ### BACKLOG
-add admin panel
-add email notification on release date
+* [ ] add admin panel
+
+* [ ] add email notification on release date
+
+* [ ] perhaps add web scraping to find release dates
+
+* [ ] 
+
+* [ ] 
+
+* [ ] 
+
+* [ ] 
+
+* [ ] 
+
