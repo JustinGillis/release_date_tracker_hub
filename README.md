@@ -44,3 +44,12 @@
 
 * [ ] 
 
+
+### RESEARCH
+* [ ] paginate news results
+
+* [ ] 
+
+* [ ] 
+
+* [ ] 

@@ -49,3 +49,17 @@ class ItemForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     date = DateField('Date', default=None, validators=[Optional()])
     submit = SubmitField('Submit')
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('There is no account with that email')
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired(), Length(min=6, max=255)])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), Length(min=6, max=255), EqualTo('password')])
+    submit = SubmitField('Reset Password')
