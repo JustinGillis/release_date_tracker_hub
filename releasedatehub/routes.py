@@ -1,9 +1,10 @@
 from flask import render_template, request, redirect, session, url_for, flash, abort
 
-from releasedatehub import app, db
+from releasedatehub import app, db, mail
 from releasedatehub.forms import RegistrationForm, LoginForm, UpdateAccountForm, ItemForm, RequestResetForm, ResetPasswordForm
 from releasedatehub.models import User, Item
 from flask_login import login_user, logout_user, current_user, login_required
+from flask_mail import Message
  
 import re
 from newsapi import NewsApiClient
@@ -150,7 +151,17 @@ def account():
 
 
 def send_reset_email(user):
-    pass
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                    sender='mr.snoogi@gmail.com',
+                    recipients=[user.email])
+    msg.body = f'''Click the link below to reset your password:
+{url_for('reset_token', token=token, _external=True)}
+    
+If you did not make this request then ignore this email and no changes will be made.
+'''
+    mail.send(msg)
+
 
 
 @app.route('/reset_password', methods=['GET', 'POST'])
@@ -174,4 +185,12 @@ def reset_token(token):
         flash('That is an invalid or expired token', 'warning')
         return redirect(url_for('reset_request'))
     form = ResetPasswordForm()
+    if form.validate_on_submit():
+        pw_hash = bcrypt.generate_password_hash(form.password.data)
+        user.password = pw_hash
+        db.session.commit()
+        user = User.query.filter_by(email=form.email.data).first()
+        login_user(user)
+        flash(f'Password changed for {form.username.data}!', 'success')
+        return redirect(url_for('dashboard'))
     return render_template('reset_token.html', title='Reset Password', form=form)
