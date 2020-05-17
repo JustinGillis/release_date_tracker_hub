@@ -189,8 +189,7 @@ def reset_token(token):
         pw_hash = bcrypt.generate_password_hash(form.password.data)
         user.password = pw_hash
         db.session.commit()
-        user = User.query.filter_by(email=form.email.data).first()
         login_user(user)
-        flash(f'Password changed for {form.username.data}!', 'success')
+        flash(f'Password changed!', 'success')
         return redirect(url_for('dashboard'))
     return render_template('reset_token.html', title='Reset Password', form=form)
