@@ -4,13 +4,13 @@
     {% for item in items %}
         <article class="media content-section">
             <div class="media-body">
-                <a href="{{ url_for('item', id=item.id) }}">{{ item.name }}</a>
+                <a href="{{ url_for('items.item', id=item.id) }}">{{ item.name }}</a>
                 {% if item.date %}
                     <p>Release Date: {{ item.date.strftime('%Y-%m-%d') }}</p>
                 {% else %}
                     <p>No Date Set</p>
                 {% endif %}
-                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('item_news', name=item.name) }}">News</a>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('items.item_news', name=item.name) }}">News</a>
             </div>
         </article>
     {% endfor %}

@@ -26,6 +26,10 @@ app.config.update(
 )
 mail = Mail(app)
 
-from releasedatehub import routes
-
+from releasedatehub.users.routes import users
+from releasedatehub.items.routes import items
+from releasedatehub.main.routes import main
+app.register_blueprint(users)
+app.register_blueprint(items)
+app.register_blueprint(main)
 
