@@ -1,7 +1,7 @@
 import secrets
 from flask import url_for
 from flask_mail import Message
-from releasedatehub import app, mail
+from releasedatehub import mail
 
 def send_reset_email(user):
     token = user.get_reset_token()

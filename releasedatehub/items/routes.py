@@ -3,6 +3,7 @@ from flask_login import current_user, login_required
 from releasedatehub import db
 from releasedatehub.models import Item
 from releasedatehub.items.forms import ItemForm
+from releasedatehub import newsapi
 
 
 items = Blueprint('items', __name__)

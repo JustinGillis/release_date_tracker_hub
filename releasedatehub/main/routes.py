@@ -1,4 +1,5 @@
 from flask import render_template, request, Blueprint
+from flask_login import current_user, login_required
 from releasedatehub.models import Item
 
 main = Blueprint('main', __name__)
