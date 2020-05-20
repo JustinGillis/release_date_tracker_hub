@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, request,Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
-from releasedatehub import db, bcrypt #, newsapi
+from releasedatehub import db, bcrypt
 from releasedatehub.models import User, Item
 from releasedatehub.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
 from releasedatehub.users.utils import send_reset_email

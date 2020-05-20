@@ -11,7 +11,7 @@ def home():
 
 @main.route('/about')
 def about():
-    # add content
+    # add about content
     return render_template('about.html')
 
 @main.route('/dashboard')
