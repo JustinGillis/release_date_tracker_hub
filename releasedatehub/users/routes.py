@@ -3,8 +3,9 @@ from flask_login import login_user, current_user, logout_user, login_required
 from releasedatehub import db, bcrypt
 from releasedatehub.models import User, Item
 from releasedatehub.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
-from releasedatehub.users.utils import send_reset_email
-
+from releasedatehub.users.utils import send_notification_email
+    
+SECRET_KEY = 'c006e7558c35ca45378686fd800fafa0aa'
 
 users = Blueprint('users', __name__)
 
@@ -88,3 +89,9 @@ def reset_token(token):
         flash(f'Password changed!', 'success')
         return redirect(url_for('main.dashboard'))
     return render_template('reset_token.html', title='Reset Password', form=form)
+
+def test():
+    items = Item.query.all()
+    for item in items:
+        send_notification_email(item)
+
