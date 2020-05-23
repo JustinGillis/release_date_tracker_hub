@@ -38,6 +38,7 @@ class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     date = db.Column(db.DateTime, default=None)
+    notification_emails_sent = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, server_default=func.now())
     updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
