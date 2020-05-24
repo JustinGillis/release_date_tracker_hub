@@ -10,7 +10,7 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USERNAME = 'release.date.hub@gmail.com'
     MAIL_PASSWORD = 'Gp2js8!30'
-    NEWSAPI_KEY = os.environ.get('NEWSAPI_KEY')
+    NEWSAPI_KEY = '571610756dbb460298a1abbe29199de9'
     
 
 

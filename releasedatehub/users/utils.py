@@ -44,3 +44,4 @@ Thank you for using Release Date Tracker
 
             item.notification_emails_sent = item.notification_emails_sent+1
             db.session.commit()
+

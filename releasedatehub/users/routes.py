@@ -3,7 +3,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from releasedatehub import db, bcrypt
 from releasedatehub.models import User, Item
 from releasedatehub.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
-from releasedatehub.users.utils import send_notification_email
+from releasedatehub.users.utils import send_reset_email, send_notification_email
     
 SECRET_KEY = 'c006e7558c35ca45378686fd800fafa0aa'
 
