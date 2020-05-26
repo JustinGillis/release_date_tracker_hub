@@ -1,23 +1,31 @@
 body {
-    background: #fafafa;
+    background: #5CDB95;
     color: #333333;
     margin-top: 5rem;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    color: #444444;
+    color: #edf5e1;
+  }
+
+  h1 {
+    font-size: 7em;
   }
   
-  .bg-steel {
-    background-color: #5f788a;
+  .bg-green {
+    background-color: #5CDB95;
   }
   
+  .site-header .navbar-brand {
+    color: #05386B;
+  }
+
   .site-header .navbar-nav .nav-link {
-    color: #cbd5db;
+    color: #05386B;
   }
   
   .site-header .navbar-nav .nav-link:hover {
-    color: #ffffff;
+    color: #379683;
   }
   
   .site-header .navbar-nav .nav-link.active {

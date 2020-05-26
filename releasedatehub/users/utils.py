@@ -18,15 +18,8 @@ If you did not make this request then ignore this email and no changes will be m
 '''
     mail.send(msg)
 
-
-
-
-
-# only send on/after release date
-# stop sending if emails sent >= 7
 def send_notification_email():
     items = Item.query.all()
-
     for item in items:
         # if item.date > today
         if item.notification_emails_sent <= 7:
@@ -41,7 +34,5 @@ If you do not want further reminders then please remove your tracker.
 Thank you for using Release Date Tracker
 '''
             mail.send(msg)
-
             item.notification_emails_sent = item.notification_emails_sent+1
             db.session.commit()
-
