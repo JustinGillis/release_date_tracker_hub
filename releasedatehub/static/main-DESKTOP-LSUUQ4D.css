@@ -8,16 +8,16 @@ body {
     color: #edf5e1;
   }
 
-  .home-page-text {
-    padding-left: 1em;
-    margin-top: 0.1em;
-    font-size: 6.75em;
+  .main-text  h1 {
+    outline: 1px dotted black;
+    font-size: 7em;
+    display: inline-block;
   }
 
-  .exclamation {
-    margin-top: -0.1em;
-    padding-left: 0.1em;
-    font-size: 30em;
+  .main-text  h2 {
+    outline: 1px dotted black;
+    display: inline;
+    font-size: 25em;
   }
   
   .bg-green {
@@ -26,7 +26,6 @@ body {
   
   .site-header .navbar-brand {
     color: #05386B;
-    font-weight: bold;
   }
 
   .site-header .navbar-nav .nav-link {
