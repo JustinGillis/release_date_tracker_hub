@@ -9,7 +9,7 @@
             {% else %}
                 <p>No Date Yet</p>
             {% endif %}
-            <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('items.update', id=item.id) }}">Update</a>
+            <button type="button" class="btn btn-info btn-sm m-1"><a href="{{ url_for('items.update', id=item.id) }}">Update</a></button>
             <!-- button trigger modal -->
             <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
             <!-- Modal -->

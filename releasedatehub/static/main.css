@@ -2,6 +2,7 @@ body {
     background: #5CDB95;
     color: #333333;
     margin-top: 5rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -9,24 +10,39 @@ body {
   }
 
   .home-page-text {
+    margin-top: -.3em;
     padding-left: 1em;
-    margin-top: 0.1em;
     font-size: 6.75em;
+    font-family: Verdana, Geneva, sans-serif;
+    text-shadow: 3px 3px 3px #379683;
+  }
+
+  .home-page-text-accent {
+    color: #05386B;
+    padding-left: 0.9em;
+    font-size: 7.5em;
+    font-family: Arial, Helvetica, sans-serif;
+    text-shadow: 5px 5px 5px #379683;
   }
 
   .exclamation {
-    margin-top: -0.1em;
-    padding-left: 0.1em;
-    font-size: 30em;
+    margin-top: -0.2em;
+    padding-left: .1em;
+    font-size: 35em;
+    text-shadow: 5px 5px 5px #379683;
   }
   
   .bg-green {
     background-color: #5CDB95;
   }
+
+  .site-header {
+    margin-bottom: 7.5em;
+  }
   
   .site-header .navbar-brand {
     color: #05386B;
-    font-weight: bold;
+    font-size: 1.5em;
   }
 
   .site-header .navbar-nav .nav-link {
@@ -40,15 +56,39 @@ body {
   .site-header .navbar-nav .nav-link.active {
     font-weight: 500;
   }
-  
-  .content-section {
-    background: #ffffff;
-    padding: 10px 20px;
-    border: 1px solid #dddddd;
-    border-radius: 3px;
-    margin-bottom: 20px;
+
+  article.media.content-section {
+    display: inline-block;
+    min-width: 300px;
+    margin: 0.5em;
+    color: #05386B;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px #379683;
+  }
+
+  article.media.content-section a {
+    font-size: 1.5em;
   }
   
+  .content-section {
+    background: #5CDB95;
+    padding: 10px 20px;
+    border: 1px solid #05386B;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    color: #05386B;
+    box-shadow: 5px 5px 5px #379683;
+  }
+  
+  .content-section input {
+    background-color: #edf5e1;
+    border-color: #05386B;
+  }
+
+  .content-section legend {
+    border-bottom: 1px solid #05386B;
+  }
+
   .article-title {
     color: #444444;
   }

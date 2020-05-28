@@ -31,18 +31,21 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbarToggle">
 					<div class="navbar-nav mr-auto">
-						<a class="nav-item nav-link" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+						{% if current_user.is_authenticated %}
+						<a class="nav-item nav-link" style="border-right: 1px solid #05386B;" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+						{% endif %}
+						
 						<a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
 					</div>
 					<!-- Navbar Right Side -->
 					<div class="navbar-nav">
 						{% if current_user.is_authenticated %}
-						<a class="nav-item nav-link" href="{{ url_for('items.new_item') }}">Add New Item</a>
-						<a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
+						<a class="nav-item nav-link" style="border-right: 1px solid #05386B;" href="{{ url_for('items.new_item') }}">Add New Item</a>
+						<a class="nav-item nav-link" style="border-right: 1px solid #05386B;" href="{{ url_for('users.account') }}">Account</a>
 						<a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
 						{% else %}
-						<a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
-						<a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+						<a style="border-right: 1px solid #05386B;" class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
+						<a class="nav-item nav-link" href="{{ url_for('users.register') }}">Sign Up</a>
 						{% endif %}
 					</div>
 				</div>
@@ -51,7 +54,11 @@
 	</header>
 	<main role="main" class="container">
 		<div class="row">
-			<div class="col-md-8">
+			{% if main_formatting %}
+			<div class={{ main_formatting }}>
+			{% else %}
+			<div class="col-md-12">
+			{% endif %}
 				{% with messages = get_flashed_messages(with_categories=true) %}
 				{% if messages %}
 				{% for category, message in messages %}
@@ -63,10 +70,14 @@
 				{% endwith %}
 				{% block content %}{% endblock %}
 			</div>
-			{% if no_sidebar %}
-			{% block side_content %}{% endblock side_content %}
-			{% else %}
-			<div class="col-md-4">
+			{% if side_content_format %}
+			<div class={{ side_content_format }}>
+			{% block side_content %}{% endblock side_content %}	
+			</div>
+			{% endif %}
+			
+			
+			<!-- <div class="col-md-4">
 				<div class="content-section">
 					<h3>Sidebar</h3>
 					<p class='text-muted'>Sidebar title
@@ -78,8 +89,7 @@
 						</ul>
 					</p>
 				</div>
-			</div>
-			{% endif %}
+			</div> -->
 		</div>
 	</main>
 
