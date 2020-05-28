@@ -10,8 +10,7 @@
                 {% else %}
                     <p>No Date Set</p>
                 {% endif %}
-                <button type="button" class="btn btn-info btn-sm m-1"><a href="{{ url_for('items.item_news', name=item.name) }}">News</a></button>
-                
+                <a href="{{ url_for('items.item_news', name=item.name) }}"><button class="btn btn-info btn-sm m-1">News</button></a>
             </div>
         </article>
     {% endfor %}

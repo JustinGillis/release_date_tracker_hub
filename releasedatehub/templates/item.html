@@ -9,9 +9,9 @@
             {% else %}
                 <p>No Date Yet</p>
             {% endif %}
-            <button type="button" class="btn btn-info btn-sm m-1"><a href="{{ url_for('items.update', id=item.id) }}">Update</a></button>
+            <a href="{{ url_for('items.update', id=item.id) }}"><button class="btn btn-info btn-sm m-1">Update</button></a>
             <!-- button trigger modal -->
-            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+            <button class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
             <!-- Modal -->
             <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
                 aria-hidden="true">

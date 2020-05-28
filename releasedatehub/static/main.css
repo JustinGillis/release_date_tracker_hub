@@ -9,6 +9,10 @@ body {
     color: #edf5e1;
   }
 
+  p {
+    color: #05386B;
+  }
+
   .home-page-text {
     margin-top: -.3em;
     padding-left: 1em;
@@ -62,16 +66,21 @@ body {
     min-width: 300px;
     margin: 0.5em;
     color: #05386B;
-    border-radius: 10px;
+    border-radius: 5px;
     box-shadow: 5px 5px 5px #379683;
   }
 
   article.media.content-section a {
     font-size: 1.5em;
   }
+
+  article.media.content-section p {
+    margin-top: 0.5em;
+    color: #05386B;
+  }
   
   .content-section {
-    background: #5CDB95;
+    background: #edf5e1;
     padding: 10px 20px;
     border: 1px solid #05386B;
     border-radius: 3px;
