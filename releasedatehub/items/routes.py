@@ -5,7 +5,6 @@ from releasedatehub.models import Item
 from releasedatehub.items.forms import ItemForm
 from releasedatehub import newsapi
 
-
 items = Blueprint('items', __name__)
 
 @items.route('/item/new', methods=['GET', 'POST'])
@@ -69,3 +68,4 @@ def item_news(name):
 def item(id):
     item = Item.query.get_or_404(id)
     return render_template('item.html', item=item, title=item.name)
+ 
